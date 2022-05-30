@@ -9,16 +9,46 @@ var map = L.map('map').setView([49.27767013573553, -122.91268085603525], 13);
 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 	}).addTo(map);
 
-var allText = [];
-
 var txtFile = new XMLHttpRequest();
-txtFile.open("GET", "vis_data.csv", false);
-txtFile.send();
-txtFile.onreadystatechange = function () {
-	allText = txtFile.responseText;
-	console.log("ret");
+var parsedD = {};
+var markers = []
+
+txtFile.open("GET", "https://kennyzhang620.github.io/vis_data.csv", false);
+txtFile.onload = function (e) {
+	if (txtFile.readyState === 4) {
+		if (txtFile.status === 200) {
+			var csvData = txtFile.responseText;
+
+			parsedD = $.csv.toObjects(csvData);
+		} else {
+			console.error(txtFile.statusText);
+		}
+	}
+};
+txtFile.onerror = function (e) {
+	console.error(txtFile.statusText);
 };
 
-console.log("sync text");
-console.log(allText);
+txtFile.send();
+
+console.log(parsedD);
+
+function filter() {
+	for (var i = 0; i < parsedD.length; i++) {
+		markers.push(L.circle([parsedD[i].latitude, parsedD[i].longitude], {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.25,
+			radius: 50
+		}).addTo(map));
+
+		var metadata = "Project: " + parsedD[i].Project + "\nPI: " + parsedD[i]["PI "];
+		markers[i].bindPopup(metadata);
+    }
+}
+
+filter();
+//console.log(parsedD[0].latitude, parsedD[1].longitude);
+
+
 
