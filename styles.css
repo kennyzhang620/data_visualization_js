@@ -18,6 +18,11 @@ body
     padding: 10px;
 }
 
+.Settings_Pane {
+    display:block;
+    position:absolute;
+    z-index:500;
+}
 #homebtn {
     width:60px;
     height: 60px;
