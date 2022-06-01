@@ -3,6 +3,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet"
           href="styles.css" />
@@ -15,25 +16,65 @@
             integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
             crossorigin=""></script>
 
-    <script src="http://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
     <script src="jquery.csv.js"></script>
 
     <title>Data and Research Visualization Map</title>
-    
+
 </head>
 <body>
     <nav><image id ="logo" src="Logo.png"></image>Data and Research Visualization Map
     </nav>
-    <input type="text" id="search" class="search" placeholder="Enter a location to go to..." />
-    <div class="map_container">
-        <div class="map" id="map"></div>
-        <div class="Settings_Pane">
-            SETTINGS
-        </div>
 
-        <input type="image" src="HomeIcon.png" id="homebtn">
-        <input type="image" src="Settings.png" id="settingsbtn">
-    </div>
+    <section class="main_view">
+
+        <section class="Map_interface">
+            <div class="searchfeatures">
+                <input type="image" src="Options.png" id="options" class="options" />
+                <input type="text" id="search" class="search" placeholder="Enter a location to go to..." />
+            </div>
+
+            <div class="map_container">
+                <div class="map" id="map"></div>
+
+                <input type="image" src="HomeIcon.png" id="homebtn">
+                <input type="image" src="Settings.png" id="settingsbtn">
+            </div>
+
+            <div class="map_container">
+                <div class="Settings_Pane" id="settingspane">
+                    SETTINGS
+                </div>
+            </div>
+
+            <div class="map_container">
+                <div class="Filters_Pane" id="Filters_Pane">
+                    <div class="f_header">
+                        Filter Options
+
+                        <input type="text" id="filter_search" placeholder="Project Name" style="width:93%;padding:5px;text-align:left;" />
+                        <input type="text" id="filter_site" placeholder="Research Sites" style="width: 93%; padding: 5px; text-align: left;" />
+                        <div class="pi_section">
+                            <input type="text" id="filter_pi_main" placeholder="PI" style="width: 50%; padding: 5px; text-align: left;" />
+                            <input type="text" id="filter_pi_sub" placeholder="Co-PIs" style="width: 38%; padding: 5px; text-align: left;" />
+                        </div>
+                        <input type="text" id="filter_colabs" placeholder="Collaborators" style="width: 93%; padding: 5px; text-align: left;" />
+                        <div class="fund_section">
+                            <input type="text" id="filter_fun_main" placeholder="Funder" style="width: 50%; padding: 5px; text-align: left;" />
+                            <input type="text" id="filter_fun_time" placeholder="Period" style="width: 38%; padding: 5px; text-align: left;" />
+                        </div>
+                        <input type="text" id="filter_keywords" placeholder="Keywords" style="width: 93%; padding: 5px; text-align: left;" />
+                        <div class="fund_section">
+                            <input type="text" id="filter_lat" placeholder="Latitude" style="width: 30%; padding: 5px; text-align: left;" />
+                            <input type="text" id="filter_long" placeholder="Longitude" style="width: 30%; padding: 5px; text-align: left;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </section>
 
 
 
