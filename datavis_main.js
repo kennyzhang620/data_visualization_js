@@ -3,22 +3,43 @@
 // Initialize the map.
 var homeCoords = [49.27767013573553, -122.91268085603525];
 
-var bingKey = "AvEQ1m7_88IHqh6gFAaKUTUuuqbz_zrvMU7HEEu_vX6qXguJOWIQk4WqS-01xSAq"
+var bingKey = "AvEQ1m7_88IHqh6gFAaKUTUuuqbz_zrvMU7HEEu_vX6qXguJOWIQk4WqS-01xSAq";
 var txtFile = new XMLHttpRequest();
 var parsedD = {};
-var markers = []
+var markers = [];
 var searchbar = document.getElementById("search");
 var homebutton = document.getElementById("homebtn");
 var settingsBtn = document.getElementById("settingsbtn")
 var settingsPne = document.getElementById("settingspane");
 var filtersBtn = document.getElementById("options");
-var filtersPne = document.getElementById("Filters_Pane");
+var filtersPne = document.getElementById("filters_norm");
+var filtersPC = document.getElementById("filters_pc");
 
-var map = L.map('map').setView(homeCoords, 13);
+var defStyleBtn = document.getElementById('style1');
+var lightStyleBtn = document.getElementById('style2');
+var darkStyleBtn = document.getElementById('style3');
+var sw_Location = document.getElementById('sw_location');
+
+var FiltersActive = false;
+
+var defaultStyle = 'https://tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=qYOU04zmJXYprHE89esvVcT3qGW68VsSgDdYXjXUUmZgDRBajbH3e58EHY5bONXU';
+var lightStyle = 'https://tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=qYOU04zmJXYprHE89esvVcT3qGW68VsSgDdYXjXUUmZgDRBajbH3e58EHY5bONXU';
+var darkStyle = 'https://tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=qYOU04zmJXYprHE89esvVcT3qGW68VsSgDdYXjXUUmZgDRBajbH3e58EHY5bONXU';
+
+var redirectGMapNav = 'https://www.google.com/maps/dir/';
+
+
+var map = L.map('map').setView(homeCoords, 3);
+/*
 var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+*/
+
+var tiles = L.tileLayer(darkStyle, {}).addTo(map);
+map.attributionControl.addAttribution("<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors")
+
 
 
 
@@ -102,6 +123,9 @@ function filter() {
 filter();
 console.log(GeoCode("SFU"));
 
+function changeTileType(tileURL) {
+	tiles = L.tileLayer(tileURL, {}).addTo(map);
+}
 
 function closeRightPane() {
 	settingsPne.style.display = "none";
@@ -143,13 +167,90 @@ settingsBtn.addEventListener('click', function (clicked) {
 
 map.on('movestart', closeRightPane)
 
+window.addEventListener('resize', function (meta) {
+	if (FiltersActive) {
+		if (window.innerWidth / window.innerHeight >= (4 / 3)) {
+			filtersPC.style.display = "block";
+			filtersPne.style.display = "none";
+		}
+		else {
+			filtersPne.style.display = "block";
+			filtersPC.style.display = "none";
+		}
+
+	}
+});
+
 filtersBtn.addEventListener('click', function (clicked) {
 
-	if (filtersPne.style.display == "none")
-		filtersPne.style.display = "block";
-	else
+	console.log(FiltersActive);
+	if (!FiltersActive) {
+		if (window.innerWidth / window.innerHeight >= (4 / 3)) {
+			filtersPC.style.display = "block";
+			filtersPne.style.display = "none";
+		}
+		else {
+			filtersPne.style.display = "block";
+			filtersPC.style.display = "none";
+		}
+
+		FiltersActive = true;
+	}
+	else {
+		filtersPC.style.display = "none";
 		filtersPne.style.display = "none";
+
+		FiltersActive = false;
+    }
 });
+
+defStyleBtn.addEventListener('click', function (clicked) {
+	changeTileType(defaultStyle);
+
+});
+
+lightStyleBtn.addEventListener('click', function (clicked) {
+	changeTileType(lightStyle);
+
+});
+
+darkStyleBtn.addEventListener('click', function (clicked) {
+	changeTileType(darkStyle);
+
+});
+
+function coordsToStr(coords) {
+	return coords[0] + ',' + coords[1];
+}
+
+function navigate(webNav, src, dest) {
+	window.open(webNav + src + '/' + dest + '/');
+}
+
+function failure() {
+	alert("Failed to obtain your location. Check your permissions and try again.")
+	sw_Location.clicked = false;
+}
+sw_Location.addEventListener('click', function (sw_click) {
+	console.log("HW");
+	if (sw_Location.checked) {
+
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function (data) {
+				homeCoords = [data.coords.latitude, data.coords.longitude];
+
+			}, failure);
+		}
+		else {
+			alert("Failed to obtain your location. Check your permissions and try again.");
+			sw_Location.clicked = false;
+        }
+    }
+
+});
+
+//navigate(redirectGMapNav, coordsToStr(homeCoords), 'Port Coquitlam')
+
 
 
 
