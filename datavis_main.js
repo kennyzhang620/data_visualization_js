@@ -33,14 +33,29 @@ var redirectGMapNav = 'https://www.google.com/maps/dir/';
 var map = L.map('map').setView(homeCoords, 3);
 var mapSize = document.getElementById("map");
 
-mapSize.style.height = 960;
+adjustWin();
+
+function adjustWin() {
+	var heightVal = `${window.innerHeight * 0.75}px`;
+	mapSize.style.height = heightVal;
+
+	var aspect = window.innerWidth / window.innerHeight;
+
+	var widthX = -57 * Math.pow(4, -(aspect + 0.25)) + 96;
+	searchbar.style.width = `${widthX}%`;//150 66 // 378 87 // 538 91 // 1200 96
+	console.log(heightVal);
+}
+
+window.onresize = function (r) {
+	adjustWin();
+};
 
 /*
 var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	maxZoom: 19,
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
-*/ 
+*/
 
 var tiles = L.tileLayer(darkStyle, {}).addTo(map);
 map.attributionControl.addAttribution("<a href=\"https://www.jawg.io\" target=\"_blank\">&copy; Jawg</a> - <a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>&nbsp;contributors")
@@ -108,7 +123,7 @@ function GeoCode(query) {
 	return coords;
 }
 
-function loadLeftPanel(Project, PIs, CoPIs, Collabs) {
+function loadLeftPanel(Project, PIs, CoPIs, Collabs, Funder, Period, Keywords, Lat, Long) {
 	console.log("Data->", Project, PIs, CoPIs, Collabs);
 
 
@@ -174,53 +189,65 @@ function filter() {
 			radius: 50
 		}).addTo(map));
 
-		var metadata = `<header id="rname" style="font-size:large; text-align:center;">${Project}</header>
-		<div id = "pi_section" style = "text-align:center;">
+		var Project = parsedD[i].Project;
+		var PIs = parsedD[i]["PI "];
+		var CoPIs = parsedD[i]["Co-PI(s)"];
+		var Collabs = parsedD[i]["Collaborators\n(not funders)"];
+		var Funder = parsedD[i].Funder;
+		var TimePeriod = parsedD[i]["Funding period"];
+		var keywords = parsedD[i]["Research keywords"];
+		var site = parsedD[i]["Research Sites"];
+		var coordsLat = parsedD[i].latitude;
+		var coordsLong = parsedD[i].longitude;
+
+		var metadata = `<header id="rname" style="font-size:large; text-align:center; font-weight:800;">${Project}</header>
+		<div id = "pi_section">
+												PI(s)
                                                 <div id="PI_field" style="padding:3px;">
                                                     <div class="research_details">${PIs}</div>
                                                 </div>
+												CO-PI(S)
                                                 <div id="Co_PI_field" style="padding:3px;">
                                                     <div class="research_details">${CoPIs}</div>
                                                 </div>
                                             </div>
-                                            
+                                            COLLABORATOR(S)
                                             <div id="collab_field" style="padding:3px;">
                                                 <div class="research_details">${Collabs}</div>
                                             </div>
-                                            
+
+											FUNDER AND TIME PERIOD
                                             <div id="fund_section" style="text-align:center;">
                                                 <div id="funder_main" style="padding:2px; display:inline-block; width:43%;">
-                                                    <div class="research_details">Funder</div>
+                                                    <div class="research_details" style="height:20px;">${Funder}</div>
                                                 </div>
                                                 <div id="funder_period" style="padding: 2px;display:inline-block; width: 43%;">
-                                                    <div class="research_details">Period</div>
+                                                    <div class="research_details" style="height:20px;">${TimePeriod}</div>
                                                 </div>
                                             </div>
-                                            
+                                            KEYWORDS
                                             <div id="poi_keywords" style="padding: 3px; display: block;">
-                                                <div class="research_details">Keywords</div>
+                                                <div class="research_details">${keywords}</div>
                                             </div>
-                                            
+
+											RESEARCH SITES
+                                            <div id="poi_site" style="padding: 3px; display: block;">
+                                                <div class="research_details" style="height: 20px;">${site}</div>
+                                            </div>
+
+                                            COORDINATES
                                             <div id="coordinates" style="text-align:center;">
-                                                <div id="funder_main" style="padding:2px; width:27%; display:inline-block;">
-                                                    <div class="research_details">Latitude</div>
+                                                <div id="funder_main" style="padding:2px; width:40%;display:inline-block;">
+                                                    <div class="research_details" style="height: 20px;">${coordsLat}</div>
                                                 </div>
-                                                <div id="funder_period" style="padding: 2px; width: 27%; display: inline-block;">
-                                                    <div class="research_details">Longitude</div>
+                                                <div id="funder_period" style="padding: 2px; width: 40%; display: inline-block;">
+                                                    <div class="research_details" style="height: 20px;">${coordsLong}</div>
                                                 </div>
                                             </div>`;
 
-		var Project = parsedD[i].Project;
-		var PIs = parsedD[i]["PI "];
-		var CoPIs = parsedD[i]["Co-PI(s)"];
-		var Collabs = parsedD[i]["Collaborators↵(not funders)"];
-
 		console.log("===>", Project, PIs, CoPIs, Collabs);
 		markers[i].bindPopup(metadata);
-		markers[i].on('click', function (inp) {
-			loadLeftPanel(Project, PIs, CoPIs, Collabs);
 
-		});
     }
 }
 

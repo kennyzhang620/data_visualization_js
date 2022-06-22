@@ -9,12 +9,14 @@ body
 
 .searchfeatures {
     width:100%;
-    display: inline-block;
     border: 2px solid grey;
+    display:inline-block;
 }
 
 .search {
-    width:95%;
+    width:90%;
+    display:block;
+    float:right;
     padding: 5px;
 }
 
@@ -58,10 +60,12 @@ body
 
 .research_details {
     border: 2px solid grey;
-    display: block;
+    overflow:scroll;
     padding: 5px;
-    text-align: left;
+    text-align: center;
     font-size: 15px;
+    height:40px;
+    border-radius:8px;
 }
 #filters_norm {
     display:none;
