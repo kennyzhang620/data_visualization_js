@@ -41,7 +41,7 @@ function adjustWin() {
 
 	var aspect = window.innerWidth / window.innerHeight;
 
-	var widthX = -57 * Math.pow(4, -(aspect + 0.25)) + 96;
+	var widthX = -50 * Math.pow(13, -(aspect + 0.05)) + 96;
 	searchbar.style.width = `${widthX}%`;//150 66 // 378 87 // 538 91 // 1200 96
 	console.log(heightVal);
 }
