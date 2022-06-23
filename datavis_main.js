@@ -250,11 +250,11 @@ function filter() {
                                                     <div class="research_details" style="height: 20px;">${coordsLong}</div>
                                                 </div>
                                             </div>
-											<div id="options" style="text-align:center;">
-												<div id="more_options" style="padding:2px; width:20%;display:inline-block;">
+											<div id="options" style="text-align:left;">
+												<div id="more_options" style="padding:2px; width:40%;display:inline-block;">
 													<div class="research_details" style="height:20px" onclick="loadLeftPanel(${i})">More information</div>
 												</div>
-												<div id="navigate" style="padding:2px; width:60%;display:inline-block;">
+												<div id="navigate" style="padding:2px; width:55%;display:inline-block;">
 													<div class="research_details" style="height:20px" onclick="navigate(redirectGMapNav, coordsToStr(homeCoords), coordsToStr( [${parseFloat(parsedD[i].latitude)}, ${parseFloat(parsedD[i].longitude)}] ))">Navigate to Site</div>
 												</div>
 											</div>
