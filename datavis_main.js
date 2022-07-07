@@ -38,8 +38,6 @@ var mapSize = document.getElementById("map");
 function adjustWin() {
 
 	var heightValN = 0.85;
-	mapSize.style.height = heightVal;
-
 	var aspect = window.innerWidth / window.innerHeight;
 
 	var widthX = -50 * Math.pow(13, -(aspect + 0.05)) + 96;
@@ -425,6 +423,10 @@ adjustWin();
 
 
 //navigate(redirectGMapNav, coordsToStr(homeCoords), 'Port Coquitlam')
+
+window.addEventListener('resize', function (event) {
+	adjustWin();
+}, true);
 
 
 

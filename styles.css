@@ -28,7 +28,7 @@ nav {
 .data_header {
     font-size: 12px;
     overflow: scroll;
-    height: 90vh;
+    height: 83.5vh;
     border-radius: 8px;
 }
 
@@ -117,8 +117,11 @@ body
 }
 
 #filters_norm {
-    display:none;
-    z-index:10000;
+    display: none;
+    z-index: 10000;
+
+    animation-name: transin_mob;
+    animation-duration: 1s;
 }
 
 .f_header {
@@ -144,6 +147,16 @@ body
 @keyframes transin {
     0% {width:0%}
     100% {width:100%;}
+}
+
+@keyframes transin_mob {
+    0% {
+        height: 0%
+    }
+
+    100% {
+        height: 100%;
+    }
 }
 
 .Style-Options {
